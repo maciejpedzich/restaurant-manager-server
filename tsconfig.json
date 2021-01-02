@@ -5,6 +5,7 @@
 		"strict": true,
 		"importHelpers": true,
 		"moduleResolution": "node",
+		"experimentalDecorators": true,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
@@ -12,6 +13,6 @@
 		"baseUrl": ".",
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
-	"include": ["*.ts"],
+	"include": ["**/*.ts"],
 	"exclude": ["node_modules"]
 }
