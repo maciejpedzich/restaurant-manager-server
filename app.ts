@@ -2,9 +2,11 @@ import express from 'express';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { config as loadENV } from 'dotenv';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 import errorMiddleware from './middleware/error';
+import authRouter from './routers/auth';
 
 loadENV();
 
@@ -25,10 +27,14 @@ const isDevelopmentEnv = process.env.NODE_ENV === 'development';
 			cors({
 				origin: process.env.ORIGIN_URL as string,
 				credentials: true,
-				allowedHeaders: ['Content-Type', 'Authorization']
+				allowedHeaders: ['Content-Type', 'Authorization'],
+				exposedHeaders: ['Authorization']
 			})
 		);
+		app.use(cookieParser());
 		app.use(express.json());
+
+		app.use(authRouter);
 		app.use(errorMiddleware);
 
 		app.listen(process.env.PORT);
