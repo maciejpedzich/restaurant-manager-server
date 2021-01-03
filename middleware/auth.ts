@@ -13,27 +13,21 @@ export default async function authMiddleware(
 ) {
 	const userRepository = getRepository(User);
 	const secret = process.env.JWT_SECRET as string;
-	const accessToken = req.headers.authorization as string;
+	const accessToken = (req.headers.authorization as string).split(' ')[1];
 
 	try {
 		const accessTokenPayload = verify(accessToken, secret) as TokenPayload;
-
-		delete accessTokenPayload.iat;
-		delete accessTokenPayload.exp;
 		req.user = await userRepository.findOne(accessTokenPayload.userId);
 
 		return next();
 	} catch (error) {
-		if (error instanceof TokenExpiredError && req.path === '/refresh') {
+		if (error instanceof TokenExpiredError) {
 			try {
 				const refreshToken = req.cookies['Authorization-Refresh'];
 				const refreshTokenPayload = verify(
 					refreshToken,
 					secret
 				) as TokenPayload;
-
-				delete refreshTokenPayload.iat;
-				delete refreshTokenPayload.exp;
 				req.user = await userRepository.findOne(refreshTokenPayload.userId);
 
 				return next();

@@ -14,7 +14,7 @@ export default class User extends BaseModel {
 	email!: string;
 
 	@Column('text', { nullable: false, select: false })
-	password!: string;
+	password?: string;
 
 	@Column('text', { nullable: false })
 	location!: string;

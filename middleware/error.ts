@@ -7,6 +7,10 @@ export default function errorMiddleware(
 	res: Response,
 	next: NextFunction
 ) {
+	if (process.env.NODE_ENV === 'development') {
+		console.error(error);
+	}
+
 	let status = 500;
 	let message = 'An unexpected error occurred';
 

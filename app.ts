@@ -34,7 +34,7 @@ const isDevelopmentEnv = process.env.NODE_ENV === 'development';
 		app.use(cookieParser());
 		app.use(express.json());
 
-		app.use(authRouter);
+		app.use('/auth', authRouter);
 		app.use(errorMiddleware);
 
 		app.listen(process.env.PORT);

@@ -39,17 +39,32 @@ export default class AuthService {
 		const userRepository = getRepository(User);
 
 		try {
-			const user = await userRepository.findOne({
-				where: { email: req.body.email },
-				select: ['password']
-			});
-
-			console.log(user);
+			const user = await userRepository.findOne(
+				{ email: req.body.email },
+				{
+					// pain
+					select: [
+						'password',
+						'location',
+						'lastname',
+						'id',
+						'firstname',
+						'favouriteCategories',
+						'email',
+						'dateUpdated',
+						'dateCreated'
+					]
+				}
+			);
 
 			if (user) {
-				const passwordsMatch = await compare(req.body.password, user.password);
+				const passwordsMatch = await compare(
+					req.body.password,
+					user.password as string
+				);
 
 				if (passwordsMatch) {
+					delete req.user?.password;
 					req.user = user;
 
 					return next();
