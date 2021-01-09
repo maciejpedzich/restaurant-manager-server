@@ -1,7 +1,7 @@
 {
-	"name": "bookcrossing-app-server",
+	"name": "restaurant-manager-server",
 	"version": "0.1.0",
-	"description": "Backend for my bookcrossing mobile app",
+	"description": "Backend for my restaurant manager app",
 	"main": "app.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/maciejpedzich/bookcrossing-app-server.git"
+		"url": "git+https://github.com/maciejpedzich/restaurant-manager-server.git"
 	},
 	"author": "Maciej Pędzich",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/maciejpedzich/bookcrossing-app-server/issues"
+		"url": "https://github.com/maciejpedzich/restaurant-manager-server/issues"
 	},
-	"homepage": "https://github.com/maciejpedzich/bookcrossing-app-server#readme",
+	"homepage": "https://github.com/maciejpedzich/restaurant-manager-server#readme",
 	"dependencies": {
 		"bcrypt": "^5.0.0",
 		"class-transformer": "^0.3.1",
