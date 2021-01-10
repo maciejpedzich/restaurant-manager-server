@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer';
 import {
 	validateOrReject,
 	ValidationError,
-	ValidationOptions
+	ValidatorOptions
 } from 'class-validator';
 
 import StringMap from '../interfaces/string-map';
@@ -11,12 +11,12 @@ import InvalidDataError from '../errors/invalid-data';
 
 export default function validationMiddleware(
 	type: any,
-	validationOpts?: ValidationOptions
+	validatorOpts?: ValidatorOptions
 ) {
 	return async function (req: Request, res: Response, next: NextFunction) {
 		try {
 			const body = plainToClass(type, req.body);
-			await validateOrReject(body, validationOpts);
+			await validateOrReject(body, validatorOpts);
 
 			return next();
 		} catch (errors) {
