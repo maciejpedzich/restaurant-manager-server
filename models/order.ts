@@ -7,13 +7,13 @@ import OrderProduct from '../interfaces/order-product';
 export enum Status {
 	RECEIVED = 'Received',
 	PREPARING = 'Preparing',
-	DELIVERING = 'Delivering',
 	PACKING = 'Packing',
+	DELIVERING = 'Delivering',
 	READY = 'Ready'
 }
 
 @Entity({ name: 'orders' })
-export class Order extends BaseEntity {
+export default class Order extends BaseEntity {
 	@Column({ type: 'enum', enum: Status, default: Status.RECEIVED })
 	status!: Status;
 
