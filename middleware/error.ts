@@ -7,7 +7,10 @@ export default function errorMiddleware(
 	res: Response,
 	next: NextFunction
 ) {
-	if (process.env.NODE_ENV === 'development') {
+	if (
+		process.env.NODE_ENV === 'development' &&
+		!(error instanceof BaseHttpError)
+	) {
 		console.error(error);
 	}
 
