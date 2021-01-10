@@ -1,5 +1,5 @@
 import { Response, NextFunction } from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import { compare, hash } from 'bcrypt';
 
 import RequestWithUser from '../interfaces/request-with-user';
@@ -21,6 +21,7 @@ export default class AuthService {
 			});
 
 			if (!emailRegistered) {
+				req.body.orders = [];
 				req.body.password = await hash(req.body.password, 10);
 
 				const user = (userRepository.create(req.body) as unknown) as User;
@@ -39,23 +40,15 @@ export default class AuthService {
 		const userRepository = getRepository(User);
 
 		try {
-			const user = await userRepository.findOne(
-				{ email: req.body.email },
-				{
-					// pain
-					select: [
-						'password',
-						'location',
-						'lastname',
-						'id',
-						'firstname',
-						'favouriteCategories',
-						'email',
-						'dateUpdated',
-						'dateCreated'
-					]
-				}
-			);
+			const columns = getConnection()
+				.getMetadata(User)
+				.ownColumns.map((column) => `user.${column.propertyName}`);
+
+			const user = await userRepository
+				.createQueryBuilder('user')
+				.select(columns)
+				.where('user.email = :email', { email: req.body.email })
+				.getOne();
 
 			if (user) {
 				const passwordsMatch = await compare(
@@ -64,7 +57,7 @@ export default class AuthService {
 				);
 
 				if (passwordsMatch) {
-					delete req.user?.password;
+					delete user.password;
 					req.user = user;
 
 					return next();
