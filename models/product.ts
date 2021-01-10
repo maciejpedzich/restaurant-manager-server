@@ -18,6 +18,9 @@ export default class Product extends BaseEntity {
 	@Column('text', { nullable: false })
 	imageUrl!: string;
 
+	@Column('text', { nullable: false })
+	category!: string;
+
 	//prettier-ignore
 	@Column({
 		type: 'enum',
