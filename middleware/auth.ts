@@ -13,9 +13,9 @@ export default async function authMiddleware(
 ) {
 	const userRepository = getRepository(User);
 	const secret = process.env.JWT_SECRET as string;
-	const accessToken = (req.headers.authorization as string).split(' ')[1];
 
 	try {
+		const accessToken = (req.headers.authorization as string).split(' ')[1];
 		const accessTokenPayload = verify(accessToken, secret) as TokenPayload;
 		req.user = await userRepository.findOne(accessTokenPayload.userId);
 
