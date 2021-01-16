@@ -41,6 +41,6 @@ export default class User extends BaseEntity {
 	@Column({ type: 'enum', enum: Permissions })
 	permissions!: Permissions;
 
-	@OneToMany(() => Order, (order) => order.customer, { cascade: true })
+	@OneToMany(() => Order, (order) => order.customer)
 	orders!: Order[];
 }
