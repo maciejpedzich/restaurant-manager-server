@@ -3,7 +3,6 @@ import { Router } from 'express';
 import ProductsService from '../services/products';
 import authMiddleware from '../middleware/auth';
 import hasPermissionsMiddleware from '../middleware/has-permissions';
-import fileUpload from '../middleware/file-upload';
 
 import validationMiddleware from '../middleware/validation';
 import Product from '../models/product';
