@@ -12,6 +12,7 @@ import authRouter from './routers/auth';
 import productsRouter from './routers/products';
 import ordersRouter from './routers/orders';
 import errorMiddleware from './middleware/error';
+import initSocketIO from './init-socket.io';
 
 loadENV();
 
@@ -47,6 +48,8 @@ const isDevelopmentEnv = process.env.NODE_ENV === 'development';
     app.use('/api/products', productsRouter);
     app.use('/api/orders', ordersRouter);
     app.use(errorMiddleware);
+
+    initSocketIO();
 
     httpServer.listen(process.env.PORT);
   } catch (error) {
