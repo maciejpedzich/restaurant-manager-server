@@ -6,76 +6,86 @@ import RequestWithUser from '../interfaces/request-with-user';
 import Order from '../models/order';
 
 export default class OrdersService {
-	public async getOrders(
-		req: RequestWithUser,
-		res: Response,
-		next: NextFunction
-	) {
-		const orderRepository = getRepository(Order);
+  public async getOrders(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
+    const orderRepository = getRepository(Order);
 
-		try {
-			const orders = await orderRepository.find();
+    try {
+      const pageSize = req.query.pageSize
+        ? parseInt(req.query.pageSize as string, 10)
+        : 10;
+      const currentPage = req.query.currentPage
+        ? parseInt(req.query.currentPage as string, 10) - 1
+        : 0;
 
-			return res.status(200).json(orders);
-		} catch (error) {
-			return next(error);
-		}
-	}
+      const orders = await orderRepository.find({
+        take: pageSize,
+        skip: (currentPage + 1) * pageSize
+      });
 
-	public async makeOrder(
-		req: RequestWithUser,
-		res: Response,
-		next: NextFunction
-	) {
-		const orderRepository = getRepository(Order);
+      return res.status(200).json(orders);
+    } catch (error) {
+      return next(error);
+    }
+  }
 
-		try {
-			req.body.cost = (req.body.content as OrderProduct[]).reduce(
-				(total, product) => (total += product.cost * product.quantity),
-				0
-			);
+  public async makeOrder(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
+    const orderRepository = getRepository(Order);
 
-			const order = await orderRepository.save(
-				orderRepository.create(req.body)
-			);
+    try {
+      req.body.cost = (req.body.content as OrderProduct[]).reduce(
+        (total, product) => (total += product.cost * product.quantity),
+        0
+      );
 
-			return res.status(201).json(order);
-		} catch (error) {
-			return next(error);
-		}
-	}
+      const order = await orderRepository.save(
+        orderRepository.create(req.body)
+      );
 
-	public async getOrder(
-		req: RequestWithUser,
-		res: Response,
-		next: NextFunction
-	) {
-		const orderRepository = getRepository(Order);
+      return res.status(201).json(order);
+    } catch (error) {
+      return next(error);
+    }
+  }
 
-		try {
-			const order = await orderRepository.findOne(req.params.orderId, {
-				relations: ['customer']
-			});
+  public async getOrder(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
+    const orderRepository = getRepository(Order);
 
-			return res.status(200).json(order);
-		} catch (error) {
-			return next(error);
-		}
-	}
+    try {
+      const order = await orderRepository.findOne(req.params.orderId, {
+        relations: ['customer']
+      });
 
-	public async updateOrder(
-		req: RequestWithUser,
-		res: Response,
-		next: NextFunction
-	) {
-		const orderRepository = getRepository(Order);
+      return res.status(200).json(order);
+    } catch (error) {
+      return next(error);
+    }
+  }
 
-		try {
-			const order = await orderRepository.update(req.params.orderId, req.body);
+  public async updateOrder(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
+    const orderRepository = getRepository(Order);
 
-			return res.status(200).json({ message: 'Order updated successfully' });
-		} catch (error) {
-			return next(error);
-		}
-	}
+    try {
+      await orderRepository.update(req.params.orderId, req.body);
+
+      return res.status(200).json({ message: 'Order updated successfully' });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
