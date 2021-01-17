@@ -8,65 +8,65 @@ import EmailRegisteredError from '../errors/email-registered';
 import InvalidCredentialsError from '../errors/invalid-credentials';
 
 export default class AuthService {
-	public async register(
-		req: RequestWithUser,
-		res: Response,
-		next: NextFunction
-	) {
-		const userRepository = getRepository(User);
+  public async register(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
+    const userRepository = getRepository(User);
 
-		try {
-			const emailRegistered = await userRepository.findOne({
-				email: req.body.email
-			});
+    try {
+      const emailRegistered = await userRepository.findOne({
+        email: req.body.email
+      });
 
-			if (!emailRegistered) {
-				req.body.orders = [];
-				req.body.password = await hash(req.body.password, 10);
+      if (!emailRegistered) {
+        req.body.orders = [];
+        req.body.password = await hash(req.body.password, 10);
 
-				const user = (userRepository.create(req.body) as unknown) as User;
-				req.user = await userRepository.save(user);
+        const user = (userRepository.create(req.body) as unknown) as User;
+        req.user = await userRepository.save(user);
 
-				return next();
-			}
+        return next();
+      }
 
-			throw new EmailRegisteredError();
-		} catch (error) {
-			return next(error);
-		}
-	}
+      throw new EmailRegisteredError();
+    } catch (error) {
+      return next(error);
+    }
+  }
 
-	public async logIn(req: RequestWithUser, res: Response, next: NextFunction) {
-		const userRepository = getRepository(User);
+  public async logIn(req: RequestWithUser, res: Response, next: NextFunction) {
+    const userRepository = getRepository(User);
 
-		try {
-			const columns = getConnection()
-				.getMetadata(User)
-				.ownColumns.map((column) => `user.${column.propertyName}`);
+    try {
+      const columns = getConnection()
+        .getMetadata(User)
+        .ownColumns.map((column) => `user.${column.propertyName}`);
 
-			const user = await userRepository
-				.createQueryBuilder('user')
-				.select(columns)
-				.where('user.email = :email', { email: req.body.email })
-				.getOne();
+      const user = await userRepository
+        .createQueryBuilder('user')
+        .select(columns)
+        .where('user.email = :email', { email: req.body.email })
+        .getOne();
 
-			if (user) {
-				const passwordsMatch = await compare(
-					req.body.password,
-					user.password as string
-				);
+      if (user) {
+        const passwordsMatch = await compare(
+          req.body.password,
+          user.password as string
+        );
 
-				if (passwordsMatch) {
-					delete user.password;
-					req.user = user;
+        if (passwordsMatch) {
+          delete user.password;
+          req.user = user;
 
-					return next();
-				}
-			}
+          return next();
+        }
+      }
 
-			throw new InvalidCredentialsError();
-		} catch (error) {
-			return next(error);
-		}
-	}
+      throw new InvalidCredentialsError();
+    } catch (error) {
+      return next(error);
+    }
+  }
 }

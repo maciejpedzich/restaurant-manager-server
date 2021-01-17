@@ -1,9 +1,9 @@
 export default class BaseHttpError extends Error {
-	status: number;
+  status: number;
 
-	constructor(status: number, message: string) {
-		super(message);
+  constructor(status: number, message: string) {
+    super(message);
 
-		this.status = status;
-	}
+    this.status = status;
+  }
 }

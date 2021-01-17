@@ -17,9 +17,9 @@ authRouter.post(
 );
 
 authRouter.post(
-	'/login',
-	validationMiddleware(User, { skipMissingProperties: true }),
-	authService.logIn
+  '/login',
+  validationMiddleware(User, { skipMissingProperties: true }),
+  authService.logIn
 );
 
 authRouter.post('/refresh', authMiddleware);

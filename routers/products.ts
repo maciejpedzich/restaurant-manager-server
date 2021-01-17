@@ -13,26 +13,26 @@ const productsRouter = Router();
 productsRouter.get('/', productsService.getProducts);
 
 productsRouter.post(
-	'/',
-	authMiddleware,
-	hasPermissionsMiddleware(['Owner']),
-	validationMiddleware(Product),
-	productsService.createProduct
+  '/',
+  authMiddleware,
+  hasPermissionsMiddleware(['Owner']),
+  validationMiddleware(Product),
+  productsService.createProduct
 );
 
 productsRouter.put(
-	'/:productId',
-	authMiddleware,
-	hasPermissionsMiddleware(['Owner']),
-	validationMiddleware(Product),
-	productsService.editProduct
+  '/:productId',
+  authMiddleware,
+  hasPermissionsMiddleware(['Owner']),
+  validationMiddleware(Product),
+  productsService.editProduct
 );
 
 productsRouter.delete(
-	'/:productId',
-	authMiddleware,
-	hasPermissionsMiddleware(['Owner']),
-	productsService.removeProduct
+  '/:productId',
+  authMiddleware,
+  hasPermissionsMiddleware(['Owner']),
+  productsService.removeProduct
 );
 
 export default productsRouter;

@@ -10,24 +10,24 @@ const ordersService = new OrdersService();
 const ordersRouter = Router();
 
 ordersRouter.get(
-	'/',
-	authMiddleware,
-	hasPermissionsMiddleware(['Employee', 'Owner']),
-	ordersService.getOrders
+  '/',
+  authMiddleware,
+  hasPermissionsMiddleware(['Employee', 'Owner']),
+  ordersService.getOrders
 );
 
 ordersRouter.post(
-	'/',
-	authMiddleware,
-	validationMiddleware(Order, { skipMissingProperties: true }),
-	ordersService.makeOrder
+  '/',
+  authMiddleware,
+  validationMiddleware(Order, { skipMissingProperties: true }),
+  ordersService.makeOrder
 );
 
 ordersRouter.put(
-	'/:orderId',
-	authMiddleware,
-	hasPermissionsMiddleware(['Employee', 'Owner']),
-	ordersService.updateOrder
+  '/:orderId',
+  authMiddleware,
+  hasPermissionsMiddleware(['Employee', 'Owner']),
+  ordersService.updateOrder
 );
 
 export default ordersRouter;

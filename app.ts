@@ -20,38 +20,38 @@ const httpServer = createServer(app);
 const isDevelopmentEnv = process.env.NODE_ENV === 'development';
 
 (async () => {
-	try {
-		await createConnection({
-			type: 'postgres',
-			url: process.env.DB_URL as string,
-			entities: ['./models/*.ts'],
-			logging: isDevelopmentEnv,
-			synchronize: isDevelopmentEnv
-		});
+  try {
+    await createConnection({
+      type: 'postgres',
+      url: process.env.DB_URL as string,
+      entities: ['./models/*.ts'],
+      logging: isDevelopmentEnv,
+      synchronize: isDevelopmentEnv
+    });
 
-		app.use(
-			cors({
-				origin: process.env.ORIGIN_URL as string,
-				credentials: true,
-				methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-				allowedHeaders: ['Content-Type', 'Authorization'],
-				exposedHeaders: ['Authorization']
-			})
-		);
-		app.use(express.static('public'));
-		app.use(cookieParser());
-		app.use(express.json());
+    app.use(
+      cors({
+        origin: process.env.ORIGIN_URL as string,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        exposedHeaders: ['Authorization']
+      })
+    );
+    app.use(express.static('public'));
+    app.use(cookieParser());
+    app.use(express.json());
 
-		app.use('/upload-image', uploadImageRouter);
-		app.use('/api/auth', authRouter);
-		app.use('/api/products', productsRouter);
-		app.use('/api/orders', ordersRouter);
-		app.use(errorMiddleware);
+    app.use('/upload-image', uploadImageRouter);
+    app.use('/api/auth', authRouter);
+    app.use('/api/products', productsRouter);
+    app.use('/api/orders', ordersRouter);
+    app.use(errorMiddleware);
 
-		httpServer.listen(process.env.PORT);
-	} catch (error) {
-		console.error(error);
-	}
+    httpServer.listen(process.env.PORT);
+  } catch (error) {
+    console.error(error);
+  }
 })();
 
 export default httpServer;

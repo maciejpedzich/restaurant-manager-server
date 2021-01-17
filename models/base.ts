@@ -1,16 +1,16 @@
 import {
-	CreateDateColumn,
-	PrimaryGeneratedColumn,
-	UpdateDateColumn
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 export default abstract class BaseEntity {
-	@PrimaryGeneratedColumn('uuid')
-	id!: string;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-	@CreateDateColumn()
-	dateCreated!: Date;
+  @CreateDateColumn()
+  dateCreated!: Date;
 
-	@UpdateDateColumn()
-	dateUpdated!: Date;
+  @UpdateDateColumn()
+  dateUpdated!: Date;
 }
