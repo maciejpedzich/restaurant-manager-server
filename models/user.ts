@@ -23,6 +23,10 @@ export default class User extends BaseEntity {
   @Column('text', { nullable: false })
   firstname!: string;
 
+  @IsNotEmpty()
+  @Column('text', { nullable: false })
+  lastname!: string;
+
   @IsDefined()
   @IsNotEmpty()
   @IsEmail()
