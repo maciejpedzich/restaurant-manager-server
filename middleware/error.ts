@@ -15,7 +15,7 @@ export default function errorMiddleware(
   }
 
   let status = 500;
-  let message = 'An unexpected error occurred';
+  let message = 'An unexpected server error occurred';
 
   if (error instanceof BaseHttpError) {
     status = error.status;
