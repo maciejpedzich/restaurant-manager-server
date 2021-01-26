@@ -35,6 +35,22 @@ export default class ProductsService {
     }
   }
 
+  public async getProduct(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
+    const productRepository = getRepository(Product);
+
+    try {
+      const product = await productRepository.findOne(req.params.productId);
+
+      return res.status(200).json(product);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   public async editProduct(
     req: RequestWithUser,
     res: Response,

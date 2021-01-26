@@ -20,6 +20,8 @@ productsRouter.post(
   productsService.createProduct
 );
 
+productsRouter.get('/:productId', productsService.getProduct);
+
 productsRouter.put(
   '/:productId',
   authMiddleware,
