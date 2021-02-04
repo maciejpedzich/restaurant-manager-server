@@ -40,25 +40,25 @@ export default class Order extends BaseEntity {
   @Column('decimal', { nullable: false, precision: 5, scale: 2 })
   cost!: number;
 
-  @IsDefined()
-  @IsEnum(CollectionMethod)
-  @Column({ type: 'enum', enum: CollectionMethod })
-  collectionMethod!: CollectionMethod;
+  // @IsDefined()
+  // @IsEnum(CollectionMethod)
+  // @Column({ type: 'enum', enum: CollectionMethod })
+  // collectionMethod!: CollectionMethod;
 
-  @ValidateIf((o) => o.collectionMethod === CollectionMethod.DELIVERY)
-  @IsNotEmpty()
-  @Column('text')
-  street!: string;
+  // @ValidateIf((o) => o.collectionMethod === CollectionMethod.DELIVERY)
+  // @IsNotEmpty()
+  // @Column('text')
+  // street!: string;
 
-  @ValidateIf((o) => o.collectionMethod === CollectionMethod.DELIVERY)
-  @IsNumber()
-  @Column('int')
-  number!: number;
+  // @ValidateIf((o) => o.collectionMethod === CollectionMethod.DELIVERY)
+  // @IsNumber()
+  // @Column('int')
+  // number!: number;
 
-  @ValidateIf((o) => o.collectionMethod === CollectionMethod.DELIVERY)
-  @IsNumber()
-  @Column('int')
-  flatNumber!: number;
+  // @ValidateIf((o) => o.collectionMethod === CollectionMethod.DELIVERY)
+  // @IsNumber()
+  // @Column('int')
+  // flatNumber!: number;
 
   @ManyToOne(() => User, (user) => user.orders, { cascade: true })
   customer!: User;
