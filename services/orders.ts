@@ -23,7 +23,7 @@ export default class OrdersService {
 
       const orders = await orderRepository.find({
         take: pageSize,
-        skip: (currentPage + 1) * pageSize
+        skip: currentPage * pageSize
       });
 
       return res.status(200).json(orders);
@@ -40,10 +40,12 @@ export default class OrdersService {
     const orderRepository = getRepository(Order);
 
     try {
-      req.body.cost = (req.body.content as OrderProduct[]).reduce(
-        (total, product) => (total += product.cost * product.quantity),
-        0
-      );
+      req.body.cost = req.body.cost
+        ? req.body.cost
+        : (req.body.content as OrderProduct[]).reduce(
+            (total, product) => (total += product.cost * product.quantity),
+            0
+          );
 
       const order = await orderRepository.save(
         orderRepository.create(req.body)
