@@ -37,7 +37,7 @@ export default function initSocketIO() {
     );
 
     socket.on('update order', (id: string, status: string) =>
-      socket.to(id).emit('order updated', status)
+      socket.to(`order ${id}`).emit('order updated', status)
     );
   });
 }
