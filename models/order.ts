@@ -9,7 +9,6 @@ export enum Status {
   RECEIVED = 'Received',
   PREPARING = 'Preparing',
   PACKING = 'Packing',
-  DELIVERING = 'Delivering',
   READY = 'Ready'
 }
 
